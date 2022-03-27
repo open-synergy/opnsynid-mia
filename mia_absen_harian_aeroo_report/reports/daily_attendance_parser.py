@@ -6,6 +6,7 @@
 import time
 from datetime import date, datetime
 
+import pytz
 from dateutil.relativedelta import relativedelta
 from openerp.report import report_sxw
 
@@ -23,6 +24,7 @@ class Parser(report_sxw.rml_parse):
                 "get_attendance": self._get_attendance,
                 "get_overtime": self._get_overtime,
                 "get_hadir": self._get_hadir,
+                "convert_datetime_utc": self._convert_datetime_utc,
             }
         )
 
@@ -44,15 +46,21 @@ class Parser(report_sxw.rml_parse):
 
     def _get_attendance(self, date):
         self.list_attendance = []
+        dt_awal = datetime(date.year, date.month, date.day, 0, 0, 1)
+        convert_dt_awal = dt_awal.strftime("%Y-%m-%d %H:%M:%S")
+        dt_akhir = datetime(date.year, date.month, date.day, 23, 23, 59)
+        convert_dt_akhir = dt_akhir.strftime("%Y-%m-%d %H:%M:%S")
+        awal_utc = self._convert_datetime_utc(convert_dt_awal)
+        akhir_utc = self._convert_datetime_utc(convert_dt_akhir)
         obj_attendance = self.pool.get("hr.daily_attendance")
         criteria = [
-            ("date", "=", date),
+            ("date_start", ">=", awal_utc),
+            ("date_start", "<=", akhir_utc),
         ]
 
         attendance_ids = obj_attendance.search(
             self.cr, self.uid, criteria, order="date asc, department_id, employee_id"
         )
-
         if attendance_ids:
             no = 1
             for att in obj_attendance.browse(self.cr, self.uid, attendance_ids):
@@ -109,3 +117,19 @@ class Parser(report_sxw.rml_parse):
         ]
         jumlah_hadir = obj_attendance.search_count(self.cr, self.uid, criteria)
         return jumlah_hadir
+
+    def _convert_datetime_utc(self, dt):
+        if dt:
+            obj_user = self.pool.get("res.users")
+            user = obj_user.browse(self.cr, self.uid, [self.uid])[0]
+            convert_dt = datetime.strptime(dt, "%Y-%m-%d %H:%M:%S")
+            if user.tz:
+                tz = pytz.timezone(user.tz)
+            else:
+                tz = pytz.utc
+            convert_utc = tz.localize(convert_dt).astimezone(pytz.utc)
+            format_utc = convert_utc.strftime("%Y-%m-%d %H:%M:%S")
+
+            return format_utc
+        else:
+            return "-"
