@@ -1,14 +1,21 @@
 # Do NOT update manually; changes here will be overwritten by Copier
-_commit: 0f6de6d
+_commit: f7e9316
 _src_path: gh:open-synergy/ssi-addons-repo-template
 dependency_installation_mode: OCA
 generate_requirements_txt: true
 include_aeroo_report: true
-include_wkhtmltopdf: false
+include_wkhtmltopdf: true
 odoo_version: 8.0
 rebel_module_groups: []
 repo_description: opnsynid-mia
 repo_name: opnsynid-mia
 repo_slug: opnsynid-mia
-travis_apt_packages: []
+travis_apt_packages:
+  - python-lxml
+  - python-simplejson
+  - python-serial
+  - python-yaml
+  - python-cairo
+  - cups
+  - libcups2-dev
 travis_apt_sources: []
