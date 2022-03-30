@@ -10,3 +10,4 @@
 # To explicitely give the URL of a fork, and still use the version specified in
 # .travis.yml, use:
 aeroo_reports https://github.com/aeroo/aeroo_reports 8.0
+opnsynid-hr https://github.com/open-synergy/opnsynid-hr 8.0
