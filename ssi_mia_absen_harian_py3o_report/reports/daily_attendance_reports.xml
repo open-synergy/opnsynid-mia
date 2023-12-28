@@ -11,7 +11,7 @@
             <field name="report_name">py3o_daily_attendance</field>
             <field name="report_type">py3o</field>
             <field name="py3o_filetype">pdf</field>
-            <field name="module">ssi_mia_absen_harian_py30_report</field>
+            <field name="module">ssi_mia_absen_harian_py3o_report</field>
             <field name="py3o_template_fallback">reports/daily_attendance.ods</field>
             <field name="binding_model_id" ref="model_hr_print_daily_attendance" />
             <field name="binding_type">report</field>
