@@ -96,7 +96,7 @@ class PrintDailyAttendance(models.TransientModel):
                     "employee": att.employee_id.name,
                     "check_in": self.get_tz_datetime(utc_datetime=att.real_date_start),
                     "check_out": self.get_tz_datetime(utc_datetime=att.real_date_end),
-                    "work_hour": att.real_work_hour,
+                    "work_hour": '{0:02.0f}:{1:02.0f}'.format(*divmod(att.real_work_hour * 60, 60)),
                     "state": status,
                 }
                 list_attendance.append(res)
@@ -122,10 +122,10 @@ class PrintDailyAttendance(models.TransientModel):
                 real_ot += ot.realized_hour
                 req_ot += ot.planned_hour
             if real_ot > 0.0:
-                text_real_ot = time.strftime("%H:%M", time.gmtime(real_ot * 3600))
+                text_real_ot = '{0:02.0f}:{1:02.0f}'.format(*divmod(real_ot * 60, 60))
             if req_ot > 0.0:
-                text_req_ot = time.strftime("%H:%M", time.gmtime(req_ot * 3600))
-        return text_req_ot + " / " + text_real_ot
+                text_req_ot = '{0:02.0f}:{1:02.0f}'.format(*divmod(req_ot * 60, 60))
+        return f'{text_req_ot} / {text_real_ot}'
 
     def _get_status_count(self, date, status):
         obj_attendance = self.env["hr.daily_attendance"]
@@ -147,7 +147,7 @@ class PrintDailyAttendance(models.TransientModel):
 
     def get_tz_datetime(self, utc_datetime=False, tz=False):
         if not utc_datetime:
-            utc_datetime = fields.Datetime.now()
+            return "-"
         if not tz:
             tz = self.env.user.tz or "Asia/Jakarta"
         tz_datetime = pytz.UTC.localize(utc_datetime).astimezone(pytz.timezone(tz))

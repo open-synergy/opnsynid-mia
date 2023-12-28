@@ -100,7 +100,7 @@ class DailyAttendance(models.Model):
     @api.model
     def _from(self):
         from_str = """
-        hr_timesheet_attendance_schedule AS a
+        FROM hr_timesheet_attendance_schedule AS a
         """
         return from_str
 
