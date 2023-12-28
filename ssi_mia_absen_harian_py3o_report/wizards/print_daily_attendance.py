@@ -2,7 +2,6 @@
 # Copyright 2023 PT. Simetri Sinergi Indonesia
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 import logging
-import time
 from datetime import datetime
 
 import pytz
@@ -96,7 +95,9 @@ class PrintDailyAttendance(models.TransientModel):
                     "employee": att.employee_id.name,
                     "check_in": self.get_tz_datetime(utc_datetime=att.real_date_start),
                     "check_out": self.get_tz_datetime(utc_datetime=att.real_date_end),
-                    "work_hour": '{0:02.0f}:{1:02.0f}'.format(*divmod(att.real_work_hour * 60, 60)),
+                    "work_hour": "{:02.0f}:{:02.0f}".format(
+                        *divmod(att.real_work_hour * 60, 60)
+                    ),
                     "state": status,
                 }
                 list_attendance.append(res)
@@ -122,10 +123,10 @@ class PrintDailyAttendance(models.TransientModel):
                 real_ot += ot.realized_hour
                 req_ot += ot.planned_hour
             if real_ot > 0.0:
-                text_real_ot = '{0:02.0f}:{1:02.0f}'.format(*divmod(real_ot * 60, 60))
+                text_real_ot = "{:02.0f}:{:02.0f}".format(*divmod(real_ot * 60, 60))
             if req_ot > 0.0:
-                text_req_ot = '{0:02.0f}:{1:02.0f}'.format(*divmod(req_ot * 60, 60))
-        return f'{text_req_ot} / {text_real_ot}'
+                text_req_ot = "{:02.0f}:{:02.0f}".format(*divmod(req_ot * 60, 60))
+        return f"{text_req_ot} / {text_real_ot}"
 
     def _get_status_count(self, date, status):
         obj_attendance = self.env["hr.daily_attendance"]
