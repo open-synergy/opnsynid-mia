@@ -179,7 +179,7 @@ class PrintDailyAttendance(models.TransientModel):
     def action_print(self):
         self.ensure_one()
         report_id = self.env.ref(
-            "ssi_mia_absen_harian_py30_report.daily_attendance_report_py3o"
+            "ssi_mia_absen_harian_py3o_report.daily_attendance_report_py3o"
         )
         report_id.sudo().write({"py3o_filetype": self.output_format})
         return report_id.report_action(self)
