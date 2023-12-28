@@ -14,7 +14,11 @@ opnsynid-mia
 
 [//]: # (addons)
 
-This part will be replaced when running the oca-gen-addons-table script from OCA/maintainer-tools.
+Available addons
+----------------
+addon | version | maintainers | summary
+--- | --- | --- | ---
+[ssi_mia_absen_harian_py3o_report](ssi_mia_absen_harian_py3o_report/) | 14.0.1.0.0 |  | Daily Attendance py3o Report
 
 [//]: # (end addons)
 
