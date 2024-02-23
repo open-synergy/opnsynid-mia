@@ -1,0 +1,20 @@
+<?xml version="1.0" ?>
+<!-- Copyright 2024 OpenSynergy Indonesia
+     Copyright 2024 PT. Simetri Sinergi Indonesia
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). -->
+<odoo>
+    <data>
+        <record id="hr_daily_summary_report_py3o" model="ir.actions.report">
+            <field name="name">Daily Summary</field>
+            <field name="type">ir.actions.report</field>
+            <field name="model">hr.print_daily_summary</field>
+            <field name="report_name">py3o_daily_summary</field>
+            <field name="report_type">py3o</field>
+            <field name="py3o_filetype">pdf</field>
+            <field name="module">ssi_mia_daily_summary_py3o_report</field>
+            <field name="py3o_template_fallback">reports/daily_summary_template.ods</field>
+            <field name="binding_model_id" ref="model_hr_print_daily_summary" />
+            <field name="binding_type">report</field>
+        </record>
+    </data>
+</odoo>
