@@ -73,27 +73,26 @@ class HrPrintDailySummary(models.TransientModel):
         )
         no = 1
         for daily_summary_id in daily_summary_ids:
-            if daily_summary_id.attendance_id.state == "present":
+            schedule_id = self.env["hr.timesheet_attendance_schedule"].search([
+                ("sheet_id", "=", daily_summary_id.sheet_id.id),
+                ("date", "=", current_date),
+            ], limit=1)
+            leave_id = self.env["hr.leave"].search([
+                ("state", "=", "done"),
+                ("employee_id", "=", daily_summary_id.employee_id.id),
+                ("date_start", "<=", current_date),
+                ("date_end", ">=", current_date),
+            ], limit=1)
+            if not schedule_id:
+                status = "Off"
+            elif leave_id:
+                status = leave_id.type_id.code
+            elif daily_summary_id.attendance_id.state == "present":
                 status = "Hadir"
             elif daily_summary_id.attendance_id.state == "open":
                 status = "Cek Absen"
             else:
-                leave_id = self.env["hr.leave"].search([
-                    ("state", "=", "done"),
-                    ("employee_id", "=", daily_summary_id.employee_id.id),
-                    ("date_start", "<=", current_date),
-                    ("date_end", ">=", current_date),
-                ], limit=1)
-                schedule_id = self.env["hr.timesheet_attendance_schedule"].search([
-                    ("sheet_id", "=", daily_summary_id.sheet_id.id),
-                    ("date", "=", current_date),
-                ], limit=1)
-                if not schedule_id:
-                    status = "Off"
-                elif leave_id:
-                    status = leave_id.type_id.name
-                else:
-                    status = "Tidak Hadir"
+                status = "Tidak Hadir"
             res = {
                 "no": no,
                 "date": daily_summary_id.date,
