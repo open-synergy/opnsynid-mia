@@ -39,8 +39,8 @@ class HrDailySummaryReport(models.Model):
             ("present", "Present"),
             ("open", "Open"),
             ("absence", "Absence"),
-        ])
-
+        ],
+    )
 
     @property
     def _table_query(self):
