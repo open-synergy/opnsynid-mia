@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2024 OpenSynergy Indonesia
+     Copyright 2024 PT. Simetri Sinergi Indonesia
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). -->
+<odoo>
+<data>
+
+<record id="hr_print_daily_summary_view_form" model="ir.ui.view">
+    <field name="name">hr.print_daily_summary form</field>
+    <field name="model">hr.print_daily_summary</field>
+    <field name="arch" type="xml">
+        <form string="Print Daily Summary">
+            <group name="group_1" colspan="4" col="2">
+                <field name="date_start" />
+                <field name="date_end" />
+                <field name="output_format" />
+            </group>
+            <footer>
+                <button
+                            name="action_print"
+                            type="object"
+                            string="Print"
+                            class="oe_highlight"
+                        />
+                or
+                <button special="cancel" string="Cancel" />
+            </footer>
+        </form>
+    </field>
+</record>
+
+<record id="hr_print_daily_summary_action" model="ir.actions.act_window">
+    <field name="name">Print Daily Summary</field>
+    <field name="res_model">hr.print_daily_summary</field>
+    <field name="view_mode">form</field>
+    <field name="target">new</field>
+</record>
+
+<menuitem
+            id="hr_print_daily_summary_menu"
+            name="Daily Summary"
+            parent="ssi_timesheet.reporting_menu"
+            action="hr_print_daily_summary_action"
+            sequence="15"
+        />
+
+</data>
+</odoo>
