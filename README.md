@@ -19,6 +19,7 @@ Available addons
 addon | version | maintainers | summary
 --- | --- | --- | ---
 [ssi_mia_absen_harian_py3o_report](ssi_mia_absen_harian_py3o_report/) | 14.0.1.0.0 |  | Daily Attendance py3o Report
+[ssi_mia_daily_summary_py3o_report](ssi_mia_daily_summary_py3o_report/) | 14.0.1.0.0 |  | Daily Summary py3o Report
 
 [//]: # (end addons)
 
