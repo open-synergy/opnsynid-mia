@@ -73,20 +73,26 @@ class HrPrintDailySummary(models.TransientModel):
         )
         no = 1
         for daily_summary_id in daily_summary_ids:
-            schedule_id = self.env["hr.timesheet_attendance_schedule"].search([
-                ("sheet_id", "=", daily_summary_id.sheet_id.id),
-                ("date", "=", current_date),
-            ], limit=1)
-            leave_id = self.env["hr.leave"].search([
-                ("state", "=", "done"),
-                ("employee_id", "=", daily_summary_id.employee_id.id),
-                ("date_start", "<=", current_date),
-                ("date_end", ">=", current_date),
-            ], limit=1)
+            schedule_id = self.env["hr.timesheet_attendance_schedule"].search(
+                [
+                    ("sheet_id", "=", daily_summary_id.sheet_id.id),
+                    ("date", "=", current_date),
+                ],
+                limit=1,
+            )
+            leave_id = self.env["hr.leave"].search(
+                [
+                    ("state", "=", "done"),
+                    ("employee_id", "=", daily_summary_id.employee_id.id),
+                    ("date_start", "<=", current_date),
+                    ("date_end", ">=", current_date),
+                ],
+                limit=1,
+            )
             if not schedule_id:
                 status = "Off"
             elif leave_id:
-                status = leave_id.type_id.code
+                status = leave_id.type_id.name
             elif daily_summary_id.attendance_id.state == "present":
                 status = "Hadir"
             elif daily_summary_id.attendance_id.state == "open":
@@ -99,8 +105,12 @@ class HrPrintDailySummary(models.TransientModel):
                 "job": daily_summary_id.job_id.name,
                 "employee_id": daily_summary_id.employee_id.id,
                 "employee": daily_summary_id.employee_id.name,
-                "check_in": self.get_tz_datetime(utc_datetime=daily_summary_id.attendance_id.check_in),
-                "check_out": self.get_tz_datetime(utc_datetime=daily_summary_id.attendance_id.check_out),
+                "check_in": self.get_tz_datetime(
+                    utc_datetime=daily_summary_id.attendance_id.check_in
+                ),
+                "check_out": self.get_tz_datetime(
+                    utc_datetime=daily_summary_id.attendance_id.check_out
+                ),
                 "work_hour": "{:02.0f}:{:02.0f}".format(
                     *divmod(daily_summary_id.attendance_id.total_hour * 60, 60)
                 ),
