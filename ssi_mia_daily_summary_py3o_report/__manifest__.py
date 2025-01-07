@@ -3,7 +3,7 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 {
     "name": "Daily Summary py3o Report",
-    "version": "14.0.1.0.0",
+    "version": "14.0.1.1.0",
     "category": "Human Resource",
     "website": "https://simetri-sinergi.id",
     "author": "PT. Simetri Sinergi Indonesia, OpenSynergy Indonesia",
