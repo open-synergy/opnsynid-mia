@@ -38,12 +38,12 @@ class HrPrintDailySummary(models.TransientModel):
 
     date_start = fields.Date(
         string="Date Start",
-        default=datetime.now().strftime("%Y-%m-%d"),
+        default=lambda self: fields.Date.today(),
         required=True,
     )
     date_end = fields.Date(
         string="Date End",
-        default=datetime.now().strftime("%Y-%m-%d"),
+        default=lambda self: fields.Date.today(),
         required=True,
     )
     output_format = fields.Selection(
