@@ -125,13 +125,17 @@ class HrPrintDailySummary(models.TransientModel):
         req_ot = 0.0
         text_real_ot = "-"
         text_req_ot = "-"
-        start_date = datetime.strftime(current_date, "%Y-%m-%d")
-        end_date = datetime.strftime(current_date + relativedelta(days=1), "%Y-%m-%d")
+        start_date = datetime.strftime(current_date, "%Y-%m-%d %H:%M:%S")
+        c_start_date = self._convert_datetime_utc(start_date)
+        end_date = datetime.strftime(
+            current_date + relativedelta(days=1), "%Y-%m-%d  %H:%M:%S"
+        )
+        c_end_date = self._convert_datetime_utc(end_date)
         obj_ot = self.env["hr.overtime"]
         criteria = [
             ("employee_id", "=", employee_id),
-            ("date_start", ">=", start_date),
-            ("date_start", "<", end_date),
+            ("date_start", ">=", c_start_date),
+            ("date_start", "<", c_end_date),
         ]
         ot_ids = obj_ot.search(criteria, order="employee_id")
         if ot_ids:
